@@ -1,0 +1,3 @@
+cd ./TodoApi	
+dotnet ef migrations add AddDescriptionColumn
+dotnet ef database update
