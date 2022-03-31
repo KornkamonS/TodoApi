@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace TodoAPI.Data
+namespace ToDoApi.Data
 {
     public class ToDoItemsContext : DbContext
     {
+        public ToDoItemsContext() { }
         public ToDoItemsContext (DbContextOptions<ToDoItemsContext> options)
             : base(options)
         {
         }
 
-        public DbSet<TodoItems> TodoItems { get; set; }
+        public DbSet<ToDoApi.Data.TodoItems> TodoItems { get; set; }
     }
 }

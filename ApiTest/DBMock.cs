@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TodoAPI.Data; 
+﻿
+using Microsoft.EntityFrameworkCore;
+using ToDoApi.Data;
 
-namespace TestAPI
+namespace ApiTest
 {
     public static class DbContextMocker
     {
-        public static void Seed(this ToDoItemsContext dbContext)
-        { 
+        public static void SeedTestSuccess(this ToDoItemsContext dbContext)
+        {
             dbContext.TodoItems.Add(new TodoItems
             {
                 Id = 1,
@@ -14,16 +15,22 @@ namespace TestAPI
             });
             dbContext.SaveChanges();
         }
-
+        public static void SeedTestNotFound(this ToDoItemsContext dbContext)
+        {
+            dbContext.TodoItems.Add(new TodoItems
+            {
+                Id = 1,
+                Name = "A"
+            });
+            dbContext.SaveChanges();
+        }
         public static ToDoItemsContext CreateTestingDatabase(string dbName)
-        { 
+        {
             var options = new DbContextOptionsBuilder<ToDoItemsContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
                 .Options;
-             
-            var dbContext = new ToDoItemsContext(options); 
-            dbContext.Seed();
 
+            var dbContext = new ToDoItemsContext(options);
             return dbContext;
         }
     }

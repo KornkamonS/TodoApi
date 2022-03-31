@@ -11,9 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TodoAPI.Data;
+using ToDoApi.Data;
+using Api.Service;
 
-namespace TodoAPI
+namespace ToDoApi
 {
     public class Startup
     {
@@ -30,7 +31,8 @@ namespace TodoAPI
             services.AddControllers();
 
             services.AddDbContext<ToDoItemsContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TodoApiContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("TodoAppContext")));
+            services.AddScoped<ITodoService,TodoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
