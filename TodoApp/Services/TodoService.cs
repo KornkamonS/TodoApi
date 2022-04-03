@@ -4,26 +4,27 @@ using System.Threading.Tasks;
 using Api.Contract;
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
+using ToDoApi.Models;
 
 namespace Api.Service
 {
     public class TodoService : ITodoService
     {
 
-        private readonly ToDoItemsContext _context;
-        public TodoService(ToDoItemsContext context)
+        private readonly TodoItemsContext _context;
+        public TodoService(TodoItemsContext context)
         {
             _context = context;
         }
 
         public async Task<List<TodoItemContract>> GetTodoItems()
         {
-            var list= await _context.TodoItems.ToListAsync();
+            var list = await _context.TodoItems.ToListAsync();
             return list.Select(a => new TodoItemContract()
             {
-                id = a.Id,
-                name = a.Name
-            }).ToList() ;
+                Id = a.Id,
+                Name = a.Name
+            }).ToList();
         }
 
         public async Task<TodoItemContract> GetTodoItem(int id)
@@ -35,14 +36,14 @@ namespace Api.Service
                 return null;
             }
 
-            return new TodoItemContract() { id = todoItems.Id, name = todoItems.Name };
+            return new TodoItemContract() { Id = todoItems.Id, Name = todoItems.Name };
         }
 
         public async Task<TodoItemContract> UpdateItem(int id, TodoItemContract contract)
         {
             var todo = _context.TodoItems.First(a => a.Id == id);
             todo.Id = id;
-            todo.Name = contract.name;
+            todo.Name = contract.Name;
             try
             {
                 await _context.SaveChangesAsync();
@@ -55,14 +56,14 @@ namespace Api.Service
         }
         public async Task<TodoItemContract> CreateItem(TodoItemContract contract)
         {
-            var todo = new TodoItems()
-            { 
-                Name = contract.name
-            }; 
+            var todo = new TodoItem()
+            {
+                Name = contract.Name
+            };
             try
             {
                 _context.Add(todo);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException err)
             {
@@ -73,7 +74,7 @@ namespace Api.Service
 
         public async Task<TodoItemContract> DeleteItem(int id)
         {
-            var todo = _context.TodoItems.Find(id); 
+            var todo = _context.TodoItems.Find(id);
             try
             {
                 _context.Remove(todo);
@@ -85,8 +86,8 @@ namespace Api.Service
             }
             return new TodoItemContract()
             {
-                id = todo.Id,
-                name = todo.Name
+                Id = todo.Id,
+                Name = todo.Name
             };
         }
     }

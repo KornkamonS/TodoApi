@@ -19,7 +19,7 @@ namespace ApiTest
             var controller = new TodoItemsController(service);
             var response = await controller.GetTodoItem(1);
             dbContext.Dispose(); 
-            Assert.Equal(1, response.Value.id);
+            Assert.Equal(1, response.Value.Id);
         }
 
         [Fact]

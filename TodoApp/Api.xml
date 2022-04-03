@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Api</name>
+    </assembly>
+    <members>
+        <member name="M:ToDoApi.TodoItemsController.PutTodoItems(System.Int32,Api.Contract.TodoItemContract)">
+             <summary>
+             Update Todo Item
+             </summary>
+             <param name="id"></param>
+             <param name="todoItems"></param>
+             <returns></returns>
+             <remarks>
+             Sample request:
+            
+                 PUT /Todo
+                 {
+                    "id": 1,
+                    "name": "Item #1",
+                    "isComplete": true
+                 }
+            
+             </remarks>
+        </member>
+        <member name="T:ToDoApi.Models.TodoItem">
+            <summary>
+            Todo model
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -9,8 +9,8 @@ using ToDoApi.Data;
 namespace Api.Migrations
 {
     [DbContext(typeof(TodoItemsContext))]
-    [Migration("20220331165720_Initial")]
-    partial class Initial
+    [Migration("20220403055957_AddIsCompleteCol")]
+    partial class AddIsCompleteCol
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,13 @@ namespace Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
