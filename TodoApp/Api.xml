@@ -4,6 +4,12 @@
         <name>Api</name>
     </assembly>
     <members>
+        <member name="M:Api.Models.InitailContext.SeedRoleAsync">
+            <summary>
+            Seed core immutable/master that consistent across every database in locations and cloud.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ToDoApi.TodoItemsController.PutTodoItems(System.Int32,Api.Contract.TodoItemContract)">
              <summary>
              Update Todo Item

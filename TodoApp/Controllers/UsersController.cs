@@ -22,11 +22,13 @@ namespace ToDoApi
     public class UserController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public UserController(UserManager<User> userManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _configuration = configuration;
 
         }
@@ -57,10 +59,9 @@ namespace ToDoApi
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user != default && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
-
+                var userRoles = await _userManager.GetRolesAsync(user); 
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
@@ -96,6 +97,39 @@ namespace ToDoApi
                 );
 
             return token;
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] LoginModel model)
+        {
+            var userExists = await _userManager.FindByNameAsync(model.UserName);
+            if (userExists != default)
+                return StatusCode(StatusCodes.Status500InternalServerError, "User already exists!");
+
+            User user = new()
+            {
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.UserName
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return StatusCode(StatusCodes.Status500InternalServerError, "User creation failed! Please check user details and try again.");
+
+            await CreateRoleWhenNotfound();
+
+            await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+
+            return Ok("User created successfully!");
+        }
+
+        private async Task CreateRoleWhenNotfound()
+        {
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                await _roleManager.CreateAsync(new Role() { Name = UserRoles.Admin });
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(new Role() { Name = UserRoles.User });
         }
     }
 

@@ -1,18 +1,20 @@
-﻿using Api.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Models;
 
 namespace ToDoApi.Models
 {
     /// <summary>
     /// Todo model
     /// </summary>
-    public class TodoItem: BaseModel
-    { 
+    public class TodoItem : BaseModel
+    {
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

@@ -74,9 +74,7 @@ namespace ToDoApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
                     ClockSkew=TimeSpan.FromMinutes(30)
                 };
-            });
-
-
+            }); 
 
             //Swagger
             services.AddSwaggerGen(option =>
@@ -110,11 +108,8 @@ namespace ToDoApi
                         },
                         new List<string>()
                     }
-                });
-
-            }); 
-
-
+                }); 
+            });  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -129,14 +124,11 @@ namespace ToDoApi
             app.UseCors("default");
 
             app.UseHttpsRedirection();
-            app.UseRouting();
-
+            app.UseRouting(); 
 
             app.UseAuthentication();
-            app.UseAuthorization();
-
-
-
+            app.UseAuthorization(); 
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

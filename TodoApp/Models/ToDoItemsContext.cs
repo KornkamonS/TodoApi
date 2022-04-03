@@ -17,12 +17,19 @@ namespace ToDoApi.Data
             : base(options)
         {
         }
+        
+        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; } 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+           
+            //
+            //builder.Entity<User>()
+            //    .HasIndex(s => s.UserName)
+            //    .IsUnique();
         }
-        public DbSet<TodoItem> TodoItems { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
     }
 }
