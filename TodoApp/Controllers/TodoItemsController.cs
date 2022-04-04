@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Contract;
+using Api.Models;
 using Api.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoApi
 {
-    [Authorize]
+    [Authorize(Roles =nameof(UserRoles.Admin))]
     [Route("api/todo")]
     [ApiController]
     public class TodoItemsController : ControllerBase

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Api.Contract;
 using Api.Models;
+using Api.Options;
 using Api.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,14 +24,13 @@ namespace ToDoApi
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        private readonly IConfiguration _configuration;
+        private readonly JwtOptions _jwtOptions;
 
-        public UserController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, RoleManager<Role> roleManager, JwtOptions jwtOptions)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _configuration = configuration;
-
+            _jwtOptions = jwtOptions;
         }
 
         [AllowAnonymous]
@@ -86,11 +86,11 @@ namespace ToDoApi
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+                issuer: _jwtOptions.ValidIssuer,
+                audience: _jwtOptions.ValidAudience,
                 expires: DateTime.Now.AddMinutes(30),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature)

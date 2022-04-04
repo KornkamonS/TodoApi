@@ -9,7 +9,7 @@ using Api.Models;
 namespace ToDoApi.Models
 {
     /// <summary>
-    /// Todo model
+    /// Todo model document 
     /// </summary>
     public class TodoItem : BaseModel
     {
@@ -20,6 +20,7 @@ namespace ToDoApi.Models
         [Required]
         [MaxLength(20)]
         public string Name { get; set; }
+        public string Surename { get; set; }
 
         public bool IsComplete { get; set; }
 

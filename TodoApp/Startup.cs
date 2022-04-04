@@ -21,7 +21,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using ToDoApi.Data;
+using Api.Options;
+
 namespace ToDoApi
 {
     public class Startup
@@ -36,6 +39,7 @@ namespace ToDoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions<JwtOptions>(JwtOptions.SECTION);
             services.AddControllers();
             //ConfigurationManager configuration = Configuration;
             services.AddDbContext<TodoItemsContext>(options =>

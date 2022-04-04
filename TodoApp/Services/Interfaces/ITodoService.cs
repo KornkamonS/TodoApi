@@ -6,6 +6,10 @@ namespace Api.Service
 {
     public interface ITodoService
     {
+        /// <summary>
+        /// get todo 
+        /// </summary>
+        /// <returns></returns>
         public Task<List<TodoItemContract>> GetTodoItems();
         public Task<TodoItemContract> GetTodoItem(int id);
         public Task<TodoItemContract> UpdateItem(int id, TodoItemContract contract); 

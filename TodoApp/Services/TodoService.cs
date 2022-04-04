@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Contract;
+using Api.Options;
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
 using ToDoApi.Models;
@@ -15,8 +17,10 @@ namespace Api.Service
         public TodoService(TodoItemsContext context)
         {
             _context = context;
-        }
 
+
+        }
+        
         public async Task<List<TodoItemContract>> GetTodoItems()
         {
             var list = await _context.TodoItems.ToListAsync();

@@ -10,6 +10,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Api.Service.ITodoService.GetTodoItems">
+            <summary>
+            get todo 
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ToDoApi.TodoItemsController.PutTodoItems(System.Int32,Api.Contract.TodoItemContract)">
              <summary>
              Update Todo Item
@@ -31,7 +37,7 @@
         </member>
         <member name="T:ToDoApi.Models.TodoItem">
             <summary>
-            Todo model
+            Todo model document 
             </summary>
         </member>
     </members>
