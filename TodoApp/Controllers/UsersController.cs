@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ToDoApi
@@ -26,11 +27,11 @@ namespace ToDoApi
         private readonly RoleManager<Role> _roleManager;
         private readonly JwtOptions _jwtOptions;
 
-        public UserController(UserManager<User> userManager, RoleManager<Role> roleManager, JwtOptions jwtOptions)
+        public UserController(UserManager<User> userManager, RoleManager<Role> roleManager, IOptions<JwtOptions> jwtOptions)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _jwtOptions = jwtOptions;
+            _jwtOptions = jwtOptions.Value;
         }
 
         [AllowAnonymous]
@@ -61,7 +62,7 @@ namespace ToDoApi
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != default && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await _userManager.GetRolesAsync(user); 
+                var userRoles = await _userManager.GetRolesAsync(user);
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),

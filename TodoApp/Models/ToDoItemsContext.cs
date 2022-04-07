@@ -10,22 +10,22 @@ using ToDoApi.Models;
 
 namespace ToDoApi.Data
 {
-    public class TodoItemsContext : IdentityDbContext<User, Role, int>
+    public class TodoItemsContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public TodoItemsContext() { }
         public TodoItemsContext(DbContextOptions<TodoItemsContext> options)
             : base(options)
         {
         }
-        
+
         public DbSet<TodoItem> TodoItems { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; } 
+        public override DbSet<User> Users { get; set; }
+        public override DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-           
+
             //
             //builder.Entity<User>()
             //    .HasIndex(s => s.UserName)

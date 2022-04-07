@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Api.Models;
+using Api.Options;
 using Api.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,9 +23,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Configuration;
 using ToDoApi.Data;
-using Api.Options;
 
 namespace ToDoApi
 {
@@ -39,7 +39,10 @@ namespace ToDoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions<JwtOptions>(JwtOptions.SECTION);
+            services.Configure<JwtOptions>(Configuration.GetSection(
+                                       JwtOptions.SECTION));
+
+            //services.AddOptions<JwtOptions>(JwtOptions.SECTION);
             services.AddControllers();
             //ConfigurationManager configuration = Configuration;
             services.AddDbContext<TodoItemsContext>(options =>
@@ -48,7 +51,7 @@ namespace ToDoApi
             services.AddSingleton(Configuration);
 
             // For Identity
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<TodoItemsContext>()
                 .AddDefaultTokenProviders();
 
@@ -76,9 +79,9 @@ namespace ToDoApi
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
-                    ClockSkew=TimeSpan.FromMinutes(30)
+                    ClockSkew = TimeSpan.FromMinutes(30)
                 };
-            }); 
+            });
 
             //Swagger
             services.AddSwaggerGen(option =>
@@ -112,8 +115,8 @@ namespace ToDoApi
                         },
                         new List<string>()
                     }
-                }); 
-            });  
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,11 +131,11 @@ namespace ToDoApi
             app.UseCors("default");
 
             app.UseHttpsRedirection();
-            app.UseRouting(); 
+            app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization(); 
-            
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
