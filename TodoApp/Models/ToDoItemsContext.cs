@@ -10,7 +10,7 @@ using ToDoApi.Models;
 
 namespace ToDoApi.Data
 {
-    public class TodoItemsContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class TodoItemsContext : IdentityDbContext<User, Role, int>
     {
         public TodoItemsContext() { }
         public TodoItemsContext(DbContextOptions<TodoItemsContext> options)
